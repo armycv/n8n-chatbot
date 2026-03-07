@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>n8n Chatbot</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="chat-container">
+    <header class="chat-header">
+      <h1>n8n Chatbot</h1>
+    </header>
+    <div id="messages" class="messages" role="log" aria-live="polite"></div>
+    <div id="typing" class="typing-indicator" aria-hidden="true">Bot is typing...</div>
+    <form id="chatForm" class="input-area">
+      <input
+        type="text"
+        id="messageInput"
+        placeholder="Type a message..."
+        autocomplete="off"
+        aria-label="Message"
+      />
+      <button type="submit" id="sendBtn" aria-label="Send">Send</button>
+    </form>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
