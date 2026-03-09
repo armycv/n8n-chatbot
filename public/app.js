@@ -40,6 +40,7 @@
   function getReplyFromResponse(data) {
     if (!data) return '';
     // Direct fields
+    if (typeof data.response === 'string' && data.response.trim()) return data.response;
     if (typeof data.aiResponse === 'string' && data.aiResponse.trim()) return data.aiResponse;
     if (typeof data.reply === 'string' && data.reply.trim()) return data.reply;
     if (typeof data.text === 'string' && data.text.trim()) return data.text;

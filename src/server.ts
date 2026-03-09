@@ -22,6 +22,7 @@ interface ChatRequest {
 interface ChatResponse {
   reply?: string;
   aiResponse?: string;
+  response?: string;
   [key: string]: unknown;
 }
 
@@ -74,13 +75,25 @@ app.post('/api/chat', async (req, res) => {
       } catch {
         payload = { reply: payload as unknown as string };
       }
-    } else if (payload && typeof payload === 'object' && !('aiResponse' in payload) && !('reply' in payload)) {
+    } else if (payload && typeof payload === 'object' && !('aiResponse' in payload) && !('reply' in payload) && !('response' in payload)) {
       const body = (payload as { body?: unknown }).body;
       const data = (payload as { data?: unknown }).data;
       if (body && typeof body === 'object') payload = body as ChatResponse;
       else if (data && typeof data === 'object') payload = data as ChatResponse;
     }
 
+    // Normalize: send a single "response" field so frontend always finds the reply
+    const replyText =
+      (typeof payload?.response === 'string' && payload.response.trim() ? payload.response.trim() : '') ||
+      (typeof payload?.aiResponse === 'string' && payload.aiResponse.trim() ? payload.aiResponse.trim() : '') ||
+      (typeof payload?.reply === 'string' && payload.reply.trim() ? payload.reply.trim() : '') ||
+      (typeof payload?.text === 'string' && payload.text.trim() ? payload.text.trim() : '') ||
+      (typeof payload?.message === 'string' && payload.message.trim() ? payload.message.trim() : '') ||
+      (typeof payload?.output === 'string' && payload.output.trim() ? payload.output.trim() : '');
+    if (replyText) {
+      res.json({ response: replyText });
+      return;
+    }
     res.json(payload);
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
