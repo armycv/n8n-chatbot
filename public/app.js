@@ -4,6 +4,8 @@
   const form = document.getElementById('chatForm');
   const input = document.getElementById('messageInput');
   const sendBtn = document.getElementById('sendBtn');
+  const trackContextInput = document.getElementById('trackContext');
+  const subTopicContextInput = document.getElementById('subTopicContext');
 
   function getSessionId() {
     let id = sessionStorage.getItem('chatSessionId');
@@ -78,6 +80,8 @@
         body: JSON.stringify({
           message: message,
           sessionId: getSessionId(),
+          trackContext: (trackContextInput && trackContextInput.value) ? trackContextInput.value.trim() : '',
+          subTopicContext: (subTopicContextInput && subTopicContextInput.value) ? subTopicContextInput.value.trim() : '',
         }),
       });
 

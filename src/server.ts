@@ -17,6 +17,8 @@ if (!N8N_WEBHOOK_URL) {
 interface ChatRequest {
   message: string;
   sessionId: string;
+  trackContext?: string;
+  subTopicContext?: string;
 }
 
 interface ChatResponse {
@@ -34,6 +36,8 @@ app.post('/api/chat', async (req, res) => {
   const body = req.body as Partial<ChatRequest>;
   const message = body?.message;
   const sessionId = body?.sessionId;
+  const trackContext = typeof body?.trackContext === 'string' ? body.trackContext.trim() : '';
+  const subTopicContext = typeof body?.subTopicContext === 'string' ? body.subTopicContext.trim() : '';
 
   if (typeof message !== 'string' || !message.trim()) {
     res.status(400).json({ error: 'message is required and must be a non-empty string' });
@@ -48,6 +52,8 @@ app.post('/api/chat', async (req, res) => {
     const n8nResponse = await axios.post<ChatResponse>(N8N_WEBHOOK_URL!, {
       message: message.trim(),
       sessionId: sessionId.trim(),
+      trackContext,
+      subTopicContext,
     }, {
       timeout: 60000,
       headers: { 'Content-Type': 'application/json' },

@@ -14,6 +14,23 @@
     <div id="messages" class="messages" role="log" aria-live="polite"></div>
     <div id="typing" class="typing-indicator" aria-hidden="true">Bot is typing...</div>
     <form id="chatForm" class="input-area">
+      <div class="context-fields">
+        <input
+          type="text"
+          id="trackContext"
+          placeholder="Track (e.g. Algebra)"
+          autocomplete="off"
+          aria-label="Track context"
+        />
+        <input
+          type="text"
+          id="subTopicContext"
+          placeholder="Subtopic (e.g. Basic Addition)"
+          autocomplete="off"
+          aria-label="Subtopic context"
+        />
+      </div>
+      <div class="message-row">
       <input
         type="text"
         id="messageInput"
@@ -22,6 +39,7 @@
         aria-label="Message"
       />
       <button type="submit" id="sendBtn" aria-label="Send">Send</button>
+      </div>
     </form>
   </div>
   <script src="app.js"></script>
