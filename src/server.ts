@@ -75,6 +75,8 @@ app.post('/api/chat', async (req, res) => {
       validateStatus: () => true,
     });
 
+    console.log('[n8n POST /api/chat] status=', n8nResponse.status, 'data=', JSON.stringify(n8nResponse.data));
+
     if (n8nResponse.status >= 400) {
       const n8nMessage = n8nResponse.data && typeof n8nResponse.data === 'object' && 'message' in n8nResponse.data
         ? String((n8nResponse.data as { message?: unknown }).message)
@@ -119,6 +121,122 @@ app.post('/api/chat', async (req, res) => {
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Unknown error';
     console.error('n8n request failed:', err);
+    res.status(503).json({
+      error: 'Failed to reach n8n webhook',
+      details: message,
+    });
+  }
+});
+
+app.get('/api/conversation', async (req, res) => {
+  const sessionId = typeof req.query.sessionId === 'string' ? req.query.sessionId.trim() : '';
+  if (!sessionId) {
+    res.status(400).json({ error: 'sessionId is required' });
+    return;
+  }
+
+  const token = jwt.sign(
+    { sub: sessionId, iat: Math.floor(Date.now() / 1000) },
+    JWT_SECRET!,
+    { expiresIn: '1h' }
+  );
+
+  try {
+    const n8nResponse = await axios.get(N8N_WEBHOOK_URL!, {
+      params: { sessionId },
+      headers: { 'Authorization': `Bearer ${token}` },
+      timeout: 15000,
+      validateStatus: () => true,
+    });
+
+    console.log('[n8n GET /api/conversation] status=', n8nResponse.status, 'data=', JSON.stringify(n8nResponse.data));
+
+    if (n8nResponse.status >= 400) {
+      const n8nMessage = n8nResponse.data && typeof n8nResponse.data === 'object' && 'message' in n8nResponse.data
+        ? String((n8nResponse.data as { message?: unknown }).message)
+        : undefined;
+      res.status(502).json({
+        error: 'n8n webhook error',
+        message: n8nMessage || `n8n returned ${n8nResponse.status}`,
+        status: n8nResponse.status,
+        data: n8nResponse.data,
+      });
+      return;
+    }
+    const data = n8nResponse.data;
+    const isEmpty =
+      data === undefined ||
+      data === null ||
+      data === '' ||
+      (typeof data === 'string' && data.trim() === '') ||
+      (Array.isArray(data) && data.length === 0) ||
+      (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0);
+    if (isEmpty) {
+      res.json({ message: 'No conversation found for that session ID.' });
+      return;
+    }
+    res.json(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('n8n get conversation failed:', err);
+    res.status(503).json({
+      error: 'Failed to reach n8n webhook',
+      details: message,
+    });
+  }
+});
+
+app.delete('/api/conversation', async (req, res) => {
+  const sessionId = typeof req.query.sessionId === 'string' ? req.query.sessionId.trim() : '';
+  if (!sessionId) {
+    res.status(400).json({ error: 'sessionId is required' });
+    return;
+  }
+
+  const token = jwt.sign(
+    { sub: sessionId, iat: Math.floor(Date.now() / 1000) },
+    JWT_SECRET!,
+    { expiresIn: '1h' }
+  );
+
+  try {
+    const n8nResponse = await axios.delete(N8N_WEBHOOK_URL!, {
+      params: { sessionId },
+      headers: { 'Authorization': `Bearer ${token}` },
+      timeout: 15000,
+      validateStatus: () => true,
+    });
+
+    console.log('[n8n DELETE /api/conversation] status=', n8nResponse.status, 'data=', JSON.stringify(n8nResponse.data));
+
+    if (n8nResponse.status >= 400) {
+      const n8nMessage = n8nResponse.data && typeof n8nResponse.data === 'object' && 'message' in n8nResponse.data
+        ? String((n8nResponse.data as { message?: unknown }).message)
+        : undefined;
+      res.status(502).json({
+        error: 'n8n webhook error',
+        message: n8nMessage || `n8n returned ${n8nResponse.status}`,
+        status: n8nResponse.status,
+        data: n8nResponse.data,
+      });
+      return;
+    }
+    const data = n8nResponse.data;
+    const isEmpty =
+      data === undefined ||
+      data === null ||
+      data === '' ||
+      (typeof data === 'string' && data.trim() === '') ||
+      (Array.isArray(data) && data.length === 0) ||
+      (typeof data === 'object' && !Array.isArray(data) && Object.keys(data).length === 0);
+    if (isEmpty) {
+      res.json({ message: 'No conversation found for that session ID.', deletedRowsCount: 0 });
+      return;
+    }
+    res.json(data);
+  } catch (err) {
+    const message = err instanceof Error ? err.message : 'Unknown error';
+    console.error('n8n delete conversation failed:', err);
     res.status(503).json({
       error: 'Failed to reach n8n webhook',
       details: message,

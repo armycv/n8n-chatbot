@@ -10,6 +10,17 @@
   <div class="chat-container">
     <header class="chat-header">
       <h1>n8n Chatbot</h1>
+      <div class="conversation-control">
+        <input
+          type="text"
+          id="conversationSessionId"
+          placeholder="Session ID"
+          autocomplete="off"
+          aria-label="Session ID for conversation"
+        />
+        <button type="button" id="getConversationBtn" aria-label="Get conversation">Get conversation</button>
+        <button type="button" id="deleteConversationBtn" aria-label="Delete conversation" class="conversation-delete-btn">Delete conversation</button>
+      </div>
     </header>
     <div id="messages" class="messages" role="log" aria-live="polite"></div>
     <div id="typing" class="typing-indicator" aria-hidden="true">Bot is typing...</div>
@@ -41,6 +52,13 @@
       <button type="submit" id="sendBtn" aria-label="Send">Send</button>
       </div>
     </form>
+  </div>
+  <div id="conversationOverlay" class="conversation-overlay hidden" aria-hidden="true">
+    <div id="conversationModal" class="conversation-modal">
+      <h2 class="conversation-modal-title">Conversation</h2>
+      <div id="conversationContent" class="conversation-content"></div>
+      <button type="button" id="conversationCloseBtn" class="conversation-close-btn">Close</button>
+    </div>
   </div>
   <script src="app.js"></script>
 </body>

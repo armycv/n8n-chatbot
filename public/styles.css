@@ -38,6 +38,121 @@ body {
   font-weight: 600;
 }
 
+.conversation-control {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.conversation-control input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: #1a1a2e;
+  color: #eee;
+  font-size: 0.9rem;
+}
+
+.conversation-control input::placeholder {
+  color: #666;
+}
+
+.conversation-control button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #4a9eff;
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.conversation-control button:hover {
+  background: #3a8eef;
+}
+
+.conversation-delete-btn {
+  background: #c05050;
+}
+
+.conversation-delete-btn:hover {
+  background: #a04040;
+}
+
+.conversation-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.conversation-overlay.hidden {
+  display: none;
+}
+
+.conversation-modal {
+  background: #16213e;
+  border-radius: 12px;
+  max-width: 520px;
+  width: 100%;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.conversation-modal-title {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.conversation-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 120px;
+}
+
+.conversation-close-btn {
+  margin: 0 1rem 1rem;
+  padding: 0.65rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: #0f3460;
+  color: #eee;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.conversation-close-btn:hover {
+  background: #1a4a7a;
+}
+
+.conversation-loading {
+  color: #888;
+  margin: 0;
+}
+
+.conversation-raw {
+  margin: 0;
+  font-size: 0.85rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
 .messages {
   flex: 1;
   overflow-y: auto;
