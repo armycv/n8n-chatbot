@@ -3,14 +3,20 @@ import cors from 'cors';
 import axios from 'axios';
 import path from 'path';
 import dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
 
 dotenv.config();
 
 const N8N_WEBHOOK_URL = process.env.N8N_WEBHOOK_URL;
 const PORT = process.env.PORT ?? 3000;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!N8N_WEBHOOK_URL) {
   console.error('Missing required env N8N_WEBHOOK_URL. Copy .env.example to .env and set it.');
+  process.exit(1);
+}
+if (!JWT_SECRET) {
+  console.error('Missing required env JWT_SECRET. Copy .env.example to .env and set it.');
   process.exit(1);
 }
 
@@ -48,6 +54,12 @@ app.post('/api/chat', async (req, res) => {
     return;
   }
 
+  const token = jwt.sign(
+    { sub: sessionId.trim(), iat: Math.floor(Date.now() / 1000) },
+    JWT_SECRET!,
+    { expiresIn: '1h' }
+  );
+
   try {
     const n8nResponse = await axios.post<ChatResponse>(N8N_WEBHOOK_URL!, {
       message: message.trim(),
@@ -56,7 +68,10 @@ app.post('/api/chat', async (req, res) => {
       subTopicContext,
     }, {
       timeout: 60000,
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
       validateStatus: () => true,
     });
 
