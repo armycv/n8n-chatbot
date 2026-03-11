@@ -1,0 +1,235 @@
+{
+  "info": {
+    "_postman_id": "2be35a10-5a4e-4cb9-99a3-e79373ecd4fd",
+    "name": "chatbot n8n api",
+    "description": "All requests use shared variables: {{baseUrl}}, {{sessionId}}, {{jwt_secret}}, {{n8n-workflow-url-path}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "3861960",
+    "_collection_link": "https://go.postman.co/collection/3861960-2be35a10-5a4e-4cb9-99a3-e79373ecd4fd?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "get conversation",
+      "request": {
+        "auth": {
+          "type": "jwt",
+          "jwt": [
+            {
+              "key": "addTokenTo",
+              "value": "header",
+              "type": "string"
+            },
+            {
+              "key": "headerPrefix",
+              "value": "Bearer",
+              "type": "string"
+            },
+            {
+              "key": "algorithm",
+              "value": "HS256",
+              "type": "string"
+            },
+            {
+              "key": "payload",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "header",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "secret",
+              "value": "{{jwt_secret}}",
+              "type": "string"
+            },
+            {
+              "key": "isSecretBase64Encoded",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/webhook/{{n8n-workflow-url-path}}?sessionId={{sessionId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "webhook",
+            "{{n8n-workflow-url-path}}"
+          ],
+          "query": [
+            {
+              "key": "sessionId",
+              "value": "{{sessionId}}"
+            }
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "post chat message",
+      "request": {
+        "auth": {
+          "type": "jwt",
+          "jwt": [
+            {
+              "key": "addTokenTo",
+              "value": "header",
+              "type": "string"
+            },
+            {
+              "key": "headerPrefix",
+              "value": "Bearer",
+              "type": "string"
+            },
+            {
+              "key": "algorithm",
+              "value": "HS256",
+              "type": "string"
+            },
+            {
+              "key": "payload",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "header",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "secret",
+              "value": "{{jwt_secret}}",
+              "type": "string"
+            },
+            {
+              "key": "isSecretBase64Encoded",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message\": \"What is 2+4?\",\n  \"sessionId\": \"{{sessionId}}\",\n  \"trackContext\": \"Algebra\",\n  \"subTopicContext\": \"Basic Addition\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/webhook/{{n8n-workflow-url-path}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "webhook",
+            "{{n8n-workflow-url-path}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete conversation",
+      "request": {
+        "auth": {
+          "type": "jwt",
+          "jwt": [
+            {
+              "key": "addTokenTo",
+              "value": "header",
+              "type": "string"
+            },
+            {
+              "key": "headerPrefix",
+              "value": "Bearer",
+              "type": "string"
+            },
+            {
+              "key": "algorithm",
+              "value": "HS256",
+              "type": "string"
+            },
+            {
+              "key": "payload",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "header",
+              "value": "{}",
+              "type": "string"
+            },
+            {
+              "key": "secret",
+              "value": "{{jwt_secret}}",
+              "type": "string"
+            },
+            {
+              "key": "isSecretBase64Encoded",
+              "value": false,
+              "type": "boolean"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/webhook/{{n8n-workflow-url-path}}?sessionId=abc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "webhook",
+            "{{n8n-workflow-url-path}}"
+          ],
+          "query": [
+            {
+              "key": "sessionId",
+              "value": "abc"
+            }
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://cvtest01.app.n8n.cloud",
+      "type": "string"
+    },
+    {
+      "key": "sessionId",
+      "value": "sess_foeij0jirt6mmhg4ajg",
+      "type": "string"
+    },
+    {
+      "key": "jwt_secret",
+      "value": "REPLACE_ME",
+      "type": "string"
+    },
+    {
+      "key": "n8n-workflow-url-path",
+      "value": "22c05a4c-9301-4283-8b25-f19faec03161",
+      "type": "string"
+    }
+  ]
+}
