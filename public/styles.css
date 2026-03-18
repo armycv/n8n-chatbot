@@ -2,6 +2,10 @@
   box-sizing: border-box;
 }
 
+html[dir="rtl"] {
+  direction: rtl;
+}
+
 body {
   margin: 0;
   font-family: system-ui, -apple-system, sans-serif;
@@ -11,6 +15,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  text-align: right;
 }
 
 .chat-container {
@@ -40,8 +45,13 @@ body {
 
 .conversation-control {
   display: flex;
+  flex-direction: row;
   gap: 0.5rem;
   margin-top: 0.75rem;
+}
+
+html[dir="rtl"] .conversation-control {
+  flex-direction: row-reverse;
 }
 
 .conversation-control input {
@@ -52,6 +62,10 @@ body {
   background: #1a1a2e;
   color: #eee;
   font-size: 0.9rem;
+}
+
+html[dir="rtl"] .conversation-control input {
+  text-align: right;
 }
 
 .conversation-control input::placeholder {
@@ -137,6 +151,12 @@ body {
   cursor: pointer;
 }
 
+html[dir="rtl"] .conversation-content,
+html[dir="rtl"] .conversation-raw {
+  text-align: right;
+  direction: rtl;
+}
+
 .conversation-close-btn:hover {
   background: #1a4a7a;
 }
@@ -182,6 +202,17 @@ body {
   border-bottom-left-radius: 4px;
 }
 
+/* RTL: swap message tails and keep user/bot on correct sides */
+html[dir="rtl"] .message.user {
+  border-bottom-right-radius: 12px;
+  border-bottom-left-radius: 4px;
+}
+
+html[dir="rtl"] .message.bot {
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 4px;
+}
+
 .message.error {
   align-self: center;
   background: rgba(200, 80, 80, 0.25);
@@ -211,7 +242,12 @@ body {
 
 .context-fields {
   display: flex;
+  flex-direction: row;
   gap: 0.5rem;
+}
+
+html[dir="rtl"] .context-fields {
+  flex-direction: row-reverse;
 }
 
 .context-fields input {
@@ -220,7 +256,12 @@ body {
 
 .message-row {
   display: flex;
+  flex-direction: row;
   gap: 0.5rem;
+}
+
+html[dir="rtl"] .message-row {
+  flex-direction: row-reverse;
 }
 
 .input-area input {
@@ -231,6 +272,10 @@ body {
   background: #1a1a2e;
   color: #eee;
   font-size: 1rem;
+}
+
+html[dir="rtl"] .input-area input {
+  text-align: right;
 }
 
 .input-area input::placeholder {
